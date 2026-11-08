@@ -1,0 +1,29 @@
+# Local Python and tool artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+Microsoft/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+.aws/
+.codex/
+*.pem
+*.key
+credentials*
+
+# Keep only the reviewed pilot run in version control
+*.log
+*.jsonl
+!pilot_results_20261108T174710636910Z.jsonl
