@@ -48,7 +48,7 @@ The operator reported five paired seeds per model for Qwen3 4B and Llama 3.2. Ea
 | Qwen3 4B | 5/5 | 5/5 | 0/5 |
 | Llama 3.2 | 5/5 | 5/5 | 0/5 |
 
-All ten pairs completed. Invalid responses count as failures on the end-to-end detection metric, giving 0/10 detections in each arm. No test reached the scored stage, so detection among scorable tests is undefined. The aggregate summary does not identify the exceptions or explain whether query visibility affects the design of a valid test. The next diagnostic is to inspect the stored errors and corresponding responses without rerunning inference.
+All ten pairs completed. Invalid responses count as failures on the end-to-end detection metric, giving 0/10 detections in each arm. No test reached the scored stage, so detection among scorable tests is undefined. The operator grouped the first recorded exception for each reply. In 10 replies the scorer encountered a sales row that unpacked into two items, and in five it encountered a row that unpacked into three. Each row requires five values. The other five replies reached the sale ID and sale-date checks and raised the shared invalid-sale error. These counts identify the first validation failure per reply. Raw row inspection is needed to distinguish omitted information from alternative representations and to identify the specific invalid-sale condition. No expected daily breakdown reached comparison with the reference.
 
 ### Limitations and release decision
 
