@@ -35,7 +35,7 @@ def grade(response):
                 distinguishes=candidate["distinguishes"], detected=candidate["detects_balanced_error"])
 
 
-def run(folder):
+def run(folder, make_request=request_for, evaluate=grade):
     tags = {item["name"]: item["digest"] for item in inventory("tags")["models"]}
     version = inventory("version")
     if any(model not in tags for model in MODELS):
@@ -49,7 +49,7 @@ def run(folder):
             results = {}
             for arm in (ARMS if seed % 2 else reversed(ARMS)):
                 path = folder / f"{model.replace(':','-')}-{seed}-{arm}.json"
-                request = request_for(model, seed, arm)
+                request = make_request(model, seed, arm)
                 metadata = dict(model_digest=tags[model], ollama_version=version, request=request)
                 if path.exists():
                     record = json.loads(path.read_text(encoding="utf8"))
@@ -60,7 +60,7 @@ def run(folder):
                     record = dict(metadata=metadata)
                     try:
                         record["response"] = post("chat", request)
-                        record["result"] = grade(record["response"])
+                        record["result"] = evaluate(record["response"])
                     except (URLError, TimeoutError) as exc:
                         record["result"] = dict(status="request_error", error=str(exc))
                     with path.open("x", encoding="utf8") as handle:
