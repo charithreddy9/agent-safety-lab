@@ -1,0 +1,122 @@
+{
+  "refund": {
+    "sha256": "faa0df4ff45cf6855da2c1997eab762404536b8f4a46e9529253d3a6315c791d",
+    "digest_and_runtime": {
+      "qwen3:4b": [
+        "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+        "0.40.16"
+      ],
+      "llama3.2:latest": [
+        "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+        "0.40.16"
+      ]
+    },
+    "stop_reasons": {
+      "stop": 20
+    },
+    "by_arm": {
+      "qwen3:4b": {
+        "visible": {
+          "attempts": 5,
+          "scorable": 0,
+          "distinguishes": 0,
+          "detections": 0
+        },
+        "hidden": {
+          "attempts": 5,
+          "scorable": 0,
+          "distinguishes": 0,
+          "detections": 0
+        }
+      },
+      "llama3.2:latest": {
+        "visible": {
+          "attempts": 5,
+          "scorable": 0,
+          "distinguishes": 0,
+          "detections": 0
+        },
+        "hidden": {
+          "attempts": 5,
+          "scorable": 0,
+          "distinguishes": 0,
+          "detections": 0
+        }
+      }
+    },
+    "pairs": {
+      "qwen3:4b": {
+        "both": 0,
+        "visible_only": 0,
+        "hidden_only": 0,
+        "neither": 5
+      },
+      "llama3.2:latest": {
+        "both": 0,
+        "visible_only": 0,
+        "hidden_only": 0,
+        "neither": 5
+      }
+    }
+  },
+  "merchant": {
+    "sha256": "832104b018b1c2eb9ba86924b9a27af46afdc19a18a4499d0b34cba7f164972d",
+    "digest_and_runtime": {
+      "qwen3:4b": [
+        "359d7dd4bcdab3d86b87d73ac27966f4dbb9f5efdfcc75d34a8764a09474fae7",
+        "0.40.16"
+      ],
+      "llama3.2:latest": [
+        "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+        "0.40.16"
+      ]
+    },
+    "stop_reasons": {
+      "stop": 20
+    },
+    "by_arm": {
+      "qwen3:4b": {
+        "visible": {
+          "attempts": 5,
+          "scorable": 4,
+          "distinguishes": 4,
+          "detections": 2
+        },
+        "hidden": {
+          "attempts": 5,
+          "scorable": 2,
+          "distinguishes": 2,
+          "detections": 2
+        }
+      },
+      "llama3.2:latest": {
+        "visible": {
+          "attempts": 5,
+          "scorable": 1,
+          "distinguishes": 1,
+          "detections": 1
+        },
+        "hidden": {
+          "attempts": 5,
+          "scorable": 0,
+          "distinguishes": 0,
+          "detections": 0
+        }
+      }
+    },
+    "pairs": {
+      "qwen3:4b": {
+        "both": 1,
+        "visible_only": 1,
+        "hidden_only": 1,
+        "neither": 2
+      },
+      "llama3.2:latest": {
+        "both": 0,
+        "visible_only": 1,
+        "hidden_only": 0,
+        "neither": 4
+      }
+    }
+  }
+}

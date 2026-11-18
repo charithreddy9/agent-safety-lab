@@ -2,7 +2,7 @@
 title: "When the Total Is Right"
 subtitle: "Can small language models write tests for errors in payment reports?"
 author: "Sai Charith Reddy Yaredla"
-date: "November 18, 2026 · Preprint draft for author review"
+date: "November 18, 2026 · Release candidate 1 for author review"
 ---
 
 ## Abstract
@@ -17,7 +17,7 @@ We ask whether reviewers shown a reporting policy can construct such tests, and 
 
 ## 2. Experimental design
 
-We used Qwen3 4B and Llama 3.2 through local Ollama. For each policy and model, five seeds each produced a pair of independent responses. The visible reviewer received the policy, schema, test instructions and faulty SQL. The hidden reviewer received the same instructions with the SQL omitted. The reference query was withheld from both. Arm order alternated by seed. Each response had a 1,200-token budget, temperature 0.3 and a limit of six input sales. Qwen used thinking disabled in these controlled reviews.
+We used Qwen3 4B and Llama 3.2 through local Ollama. For each policy and model, each of five seeds produced a matched pair of responses in separate conversations. The visible reviewer received the policy, schema, test instructions and faulty SQL. The hidden reviewer received the same instructions with the SQL omitted. The reference query was withheld from both. Arm order alternated by seed. Each response had a 1,200-token budget, temperature 0.3 and a limit of six input sales. Qwen used thinking disabled in these controlled reviews.
 
 \newpage
 
@@ -31,14 +31,14 @@ We used Qwen3 4B and Llama 3.2 through local Ollama. For each policy and model, 
 
 ## 4. Results
 
-| Policy and reviewer | SQL visible | SQL hidden |
+| Policy and model | SQL shown: scorable / exposed / detected | SQL hidden: scorable / exposed / detected |
 |---|---:|---:|
-| Settlement day · Qwen | 0 / 5 | 0 / 5 |
-| Settlement day · Llama | 0 / 5 | 0 / 5 |
-| Merchant attribution · Qwen | 2 / 5 | 2 / 5 |
-| Merchant attribution · Llama | 1 / 5 | 0 / 5 |
+| Settlement day · Qwen | 0 / 0 / 0 | 0 / 0 / 0 |
+| Settlement day · Llama | 0 / 0 / 0 | 0 / 0 / 0 |
+| Merchant attribution · Qwen | 4 / 4 / 2 | 2 / 2 / 2 |
+| Merchant attribution · Llama | 1 / 1 / 1 | 0 / 0 / 0 |
 
-*Table 1. Full detections per five attempted tests. Each column retains invalid responses in its denominator.*
+*Table 1. Each cell covers five attempted tests. The three counts are nested: inputs the scorer accepted, inputs on which the reports differed, and tests that also predicted the complete correct breakdown. All 40 calls recorded a normal stop in Ollama 0.40.16.*
 
 **Settlement day.** All 20 responses failed strict input validation. In an exploratory replay, five hidden-query Qwen replies provided all five required fields as named objects. Converting them to arrays without changing values exposed the fault in every case. All five expectations were wrong. For example, one reply proposed a 100-cent sale followed by a 50-cent refund the next day, then expected +100 and +50. The reference produced +100 and −50. Those five replies contained three distinct test payloads. All five SQL-visible Qwen replies repeated the same three sales and omitted refund fields. All ten Llama replies supplied dates and net amounts without the required sale-to-refund links.
 
@@ -54,13 +54,13 @@ Of the 13 invalid merchant replies, four Qwen replies had malformed IDs or field
 
 ## 6. Scope and limitations
 
-An initial author-and-review pilot attempted ten model-written queries. Eight stopped at the author stage, one timed out, and one completed without a qualifying total-preserving error on the validation fixtures. This left no eligible self-review comparison. The controlled results in Table 1 concern **review of supplied SQL**.
+The author-pilot summary records ten attempts to generate queries. Eight stopped at the author stage, one timed out, and one completed without a qualifying total-preserving error on the validation fixtures. This left no eligible self-review comparison. The controlled results in Table 1 concern **review of supplied SQL**.
 
 The study uses one planted fault per policy, two local model configurations, and repeated seeds on the same prompts. The enumerated histories are calibration cases, not independent model trials. Repeated payloads further limit generalization. The visible-versus-hidden counts do not establish a preferred reviewer workflow. A replication should hold representation rules constant across policies and test independently selected reporting faults.
 
 ## Reproducibility and disclosures
 
-The research branch contains policies, prompts, SQL implementations and scoring code. Replaying the two operator-supplied archives reproduced all 40 controlled reviewer scores. Diagnostic conversions are reported separately from the original scores. The study used fictional transactions. An AI assistant helped develop the experiments, inspect the outputs and draft this manuscript. The author ran the local model trials. This draft is prepared for author review.
+The research branch contains policies, prompts, SQL implementations and scoring code. Replaying both operator-supplied archives matched the saved requests and reproduced all 40 controlled reviewer scores. The replay covers the two supplied-query tasks. The author-pilot counts come from the earlier pilot summary. Diagnostic conversions are reported separately from the original scores. The study used fictional transactions. An AI assistant helped develop the experiments, inspect the outputs and draft this manuscript. The author ran the local model trials. This draft is prepared for author review.
 
 [Research code and run instructions](https://github.com/charithreddy9/agent-safety-lab/tree/research/payment-report-review/research/payment-report-review)
 

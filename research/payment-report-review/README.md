@@ -1,9 +1,19 @@
 # When the Total Is Right
-## Can AI agents catch their own payment-reporting errors?
+## Release candidate for author review · November 18, 2026
 
-**Research preparation · Protocol v0.1 · November 17, 2026**
+Read [the release candidate](preprint.md) for the findings on review of supplied SQL. The [working manuscript](manuscript.md) preserves the development history, including the earlier self-review pilot, which yielded no eligible comparison.
 
-A reporting query can reconcile to the cent over a week while moving a refund from Tuesday to Monday. This pilot asks whether a model reviewing its own saved SQL or a fresh instance of the same model is more likely to design a test that exposes such an error. The intended audience is engineers deciding how to review model-written reporting queries.
+### Reproduce the controlled results
+
+From this directory, run the following with Python 3.10+ and the two original trial archives. The command reads the ZIPs directly and requires no model service. Supply paths to the ZIP files if stored elsewhere.
+
+    python replay_controlled.py reviewer-trials.zip merchant-reviewer-trials.zip
+
+Compare the output with [controlled-results.json](controlled-results.json). It records SHA-256 hashes of both archives, model digests, Ollama versions, completion reasons, per-arm counts and matched-pair outcomes. The script checks each saved request against the protocol and recalculates every score from its original response. The branch includes the aggregate replay output. The original ZIPs are held separately.
+
+### Original self-review protocol · November 17, 2026
+
+A reporting query can reconcile to the cent over a week while moving a refund from Tuesday to Monday. The original pilot asked whether a model reviewing its own saved SQL or a fresh instance of the same model would design a test that exposes such an error.
 
 ### Paper premise
 
@@ -44,7 +54,7 @@ Use a new output filename for each trial. The runner refuses to overwrite previo
 | $100 Monday, no refund | Monday $100 | No |
 | $100 Monday fully refunded Tuesday, another $100 sale Tuesday | Monday $100, Tuesday $0 | Yes |
 
-The SQLite reference agreed with the independently calculated breakdown on all four fixtures. The seeded fault preserved the total and changed the breakdown on two. A test that expected the faulty Monday-only answer was rejected. These are scorer checks. No model performance measurements have been collected.
+The SQLite reference agreed with the independently calculated breakdown on all four fixtures. The seeded fault preserved the total and changed the breakdown on two. A test that expected the faulty Monday-only answer was rejected. These four fixtures validate the scorer. Table 1 in the release candidate reports the subsequent supplied-query trials.
 
 ### Manuscript structure
 
