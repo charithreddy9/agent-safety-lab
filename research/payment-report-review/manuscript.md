@@ -1,11 +1,11 @@
 # When the Total Is Right
 ## A settlement-day benchmark for studying AI review of payment reports
 
-**Working manuscript · November 17, 2026**
+**Working manuscript · November 18, 2026**
 
 ### Abstract
 
-A payment report can reconcile over an entire reporting period while misstating activity on individual days. We introduce a small executable benchmark for testing whether AI reviewers generate examples and expected results that distinguish these reports. As a calibration experiment, we enumerate 324 synthetic histories of one or two sales over three dates and evaluate a deliberately faulty SQLite report against an independent Python calculation. Whole-period totals agree in all 324 histories. Exact daily breakdowns disagree in all 189 histories with a later-day refund and agree in the other 135. This validates the benchmark's ability to separate two kinds of assertions. The comparison between AI review workflows is specified for subsequent measurement.
+A payment report can reconcile over an entire reporting period while misstating activity on individual days. We introduce a small executable benchmark for testing whether AI reviewers generate examples and expected results that distinguish these reports. As a calibration experiment, we enumerate 324 synthetic histories of one or two sales over three dates and evaluate a deliberately faulty SQLite report against an independent Python calculation. Whole-period totals agree in all 324 histories. Exact daily breakdowns disagree in all 189 histories with a later-day refund and agree in the other 135. This validates the benchmark's ability to separate two kinds of assertions. In ten local model attempts, eight stopped at the author stage, one timed out and one completed without a qualifying error on the validation fixtures. The pilot yielded zero eligible reviewer comparisons.
 
 ### Motivation and related work
 
@@ -29,9 +29,15 @@ The reference query groups positive sales and negative refunds by their respecti
 
 The result follows from the fault construction. Moving a refund between days leaves its amount unchanged. Consider the earliest sale date of any shifted refund. At that date, the faulty report subtracts money early, and no earlier shifted refund can offset the error there. The bounded enumeration checks that the executable scorer exhibits this behavior. The frequency 189/324 describes this constructed domain only.
 
-### Planned AI comparison
+### AI comparison protocol
 
 For each model and seed, generate one SQL report. Save it before review. Ask the author session and a fresh session of the same model to generate one test each under identical row and output limits. The first session retains the query and author exchange. The fresh session receives the policy and schema. Score both tests on the same saved query. Report the number of eligible faulty reports, both-detect, author-only, fresh-only and neither, including invalid outputs and incomplete pairs. If no eligible reports occur, report that outcome. A seeded-fault study would answer a separate question about reviewing supplied code.
+
+### First local pilot
+
+The operator supplied the run summary and per-seed error messages from the saved logs. Raw responses still require inspection. Qwen3 4B seeds 1–4 failed JSON decoding at the first character. Seed 5 was interrupted by a timeout. Llama 3.2 seed 2 produced an SQLite incomplete-input error, seed 3 failed report-output validation, and seeds 4–5 referenced an unresolved column named `day`. Llama seed 1 reached both reviews. None of its four fixtures exposed a wrong breakdown with a preserved total. That summary category also admits other kinds of report errors.
+
+The denominator for comparing reviewer detection was zero. The JSON exceptions alone do not identify whether Qwen returned empty content, non-JSON text or exhausted its generation budget. Any follow-up with changed generation settings is a separate experiment.
 
 ### Limitations and release decision
 
