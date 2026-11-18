@@ -35,9 +35,9 @@ For each model and seed, generate one SQL report. Save it before review. Ask the
 
 ### First local pilot
 
-The operator supplied the run summary and per-seed error messages from the saved logs. Raw responses still require inspection. Qwen3 4B seeds 1–4 failed JSON decoding at the first character. Seed 5 was interrupted by a timeout. Llama 3.2 seed 2 produced an SQLite incomplete-input error, seed 3 failed report-output validation, and seeds 4–5 referenced an unresolved column named `day`. Llama seed 1 reached both reviews. None of its four fixtures exposed a wrong breakdown with a preserved total. That summary category also admits other kinds of report errors.
+The operator supplied the run summary and per-seed error messages from the saved logs. The operator also extracted stop reasons, generated-token counts and final-response lengths for Qwen seeds 1–4. Qwen3 4B seeds 1–4 failed JSON decoding at the first character. Seed 5 was interrupted by a timeout. Llama 3.2 seed 2 produced an SQLite incomplete-input error, seed 3 failed report-output validation, and seeds 4–5 referenced an unresolved column named `day`. Llama seed 1 reached both reviews. None of its four fixtures exposed a wrong breakdown with a preserved total. That summary category also admits other kinds of report errors.
 
-The denominator for comparing reviewer detection was zero. The JSON exceptions alone do not identify whether Qwen returned empty content, non-JSON text or exhausted its generation budget. Any follow-up with changed generation settings is a separate experiment.
+The denominator for comparing reviewer detection was zero. For each of Qwen seeds 1–4, Ollama reported a length stop at exactly 1,200 generated tokens and zero characters in the final answer. The parser therefore received an empty string in all four cases. These metadata do not establish how the generated tokens were allocated. A paired author-only diagnostic will set think=false on those four seeds while retaining the original budget and prompts, and count responses with a nonempty SQL string field before any assessment of SQL correctness. Any follow-up with changed generation settings is a separate experiment.
 
 ### Limitations and release decision
 
