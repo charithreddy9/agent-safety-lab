@@ -69,7 +69,9 @@ The correct report credits the fulfilling merchant. The supplied query credits t
 | Llama 3.2 | Yes | 5 | 1 | 1 | 1 | 1 |
 | Llama 3.2 | No | 5 | 0 | 0 | 0 | 0 |
 
-The operator supplied aggregate output for this experiment. The paired counts agree with the arm totals. For Qwen, one seed succeeded in both conditions, one only with the query visible, one only with it hidden and two in neither. Llama succeeded only in the visible condition for one seed and in neither for four. Across 20 responses, 13 failed input validation. All seven scorable inputs distinguished the reports. Two of these seven lacked a matching expected result, both from Qwen with the query visible. The aggregate counts do not identify why those expectations failed. Raw merchant records await replay.
+Replay of all 20 archived requests and responses reproduced every saved score and confirmed the operator's summary. For Qwen, one seed succeeded in both conditions, one only with the query visible, one only with it hidden and two in neither. Llama succeeded only in the visible condition for one seed and in neither for four. Across 20 responses, 13 failed input validation. All seven scorable inputs distinguished the reports. Two of these seven lacked a matching expected result, both from Qwen with the query visible. Both erroneous expectations overstated the total value of their own inputs. For Qwen visible seed 2 the input summed to 1,500 cents and the expected output to 1,700. For visible seed 5 those amounts were 2,100 and 3,101 cents. A conservation check catches both bad expectations, although the planted attribution fault itself preserves the total.
+
+Four Qwen replies failed input validation. Two used the string `": 3"` as a sale ID, one misspelled a required merchant field, and one supplied an incomplete row. Nine Llama replies omitted the required `rows` key. Six used `input` instead, two were empty objects, and one supplied a bare sale without an expected result. In a post hoc diagnostic we renamed only `input` to `rows` in the six affected replies and replayed the scorer. Five of the six then supplied fault-exposing histories but incorrect expectations. The sixth supplied correct expectations for a history on which the two queries agreed. The diagnostic added zero full detections. The primary scores use the original contract.
 
 ### Limitations and release decision
 
@@ -77,7 +79,7 @@ Each of two synthetic policies has a single planted fault. The merchant experime
 
 ### Reproduction
 
-With Python 3.10 or newer, run `python study.py` followed by `python bounded_audit.py` in this directory. Compare the latter output to `audit-results.json`. The README describes the local-model protocol.
+With Python 3.10 or newer, run `python study.py` followed by `python bounded_audit.py` in this directory. Compare the latter output to `audit-results.json`. The README describes the local-model protocol. Run `python replay_merchant.py merchant-reviewer-trials.zip` to verify the archived merchant scores and reproduce the input-key diagnostic.
 
 ### References
 
