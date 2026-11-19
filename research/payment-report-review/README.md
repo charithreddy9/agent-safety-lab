@@ -11,6 +11,15 @@ From this directory, run the following with Python 3.10+ and the two original tr
 
 Compare the output with [controlled-results.json](controlled-results.json). It records SHA-256 hashes of both archives, model digests, Ollama versions, completion reasons, per-arm counts and matched-pair outcomes. The script checks each saved request against the protocol and recalculates every score from its original response. The branch includes the aggregate replay output. The original ZIPs are held separately.
 
+### Replay the exploratory format checks
+
+    python replay_refund.py reviewer-trials.zip
+    python replay_merchant.py merchant-reviewer-trials.zip
+
+The refund replay checks the original requests and grades first. It then converts complete, exactly named sale and expected-output objects to positional arrays in strict-invalid replies. It preserves all field values. Five hidden-SQL Qwen replies became scorable, representing three distinct test payloads. All five inputs distinguished the queries and zero supplied the correct expected breakdown.
+
+The merchant replay renames the top-level input key in the six applicable replies. Five inputs then distinguished the queries with an incorrect expectation. One gave the correct expectation on an input for which the queries agreed. Both exploratory checks added zero full detections. Table 1 uses the original protocol throughout.
+
 ### Original self-review protocol · November 17, 2026
 
 A reporting query can reconcile to the cent over a week while moving a refund from Tuesday to Monday. The original pilot asked whether a model reviewing its own saved SQL or a fresh instance of the same model would design a test that exposes such an error.
