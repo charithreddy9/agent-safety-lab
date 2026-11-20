@@ -5,7 +5,13 @@ Read [the release candidate](preprint.md) for the findings on review of supplied
 
 ### Reproduce the controlled results
 
-From this directory, run the following with Python 3.10+ and the two original trial archives. The command reads the ZIPs directly and requires no model service. Supply paths to the ZIP files if stored elsewhere.
+To regenerate Table 1 from the author-review replication package, run this with Python 3.10+:
+
+    python reproduce_table.py payment-study-replication.zip
+
+The script reads the 40 final answers in the replication package, grades them from scratch, verifies each planned trial occurs once, and checks all eight cells against the full archive replay. Each cell gives scorable inputs, inputs exposing the fault and full detections per five attempts. Supply the path to your copy of the package. The script runs offline.
+
+For a separate check of the full request and response metadata, run the following with the two original trial archives. The command reads the ZIPs directly and requires no model service. Supply paths to the ZIP files if stored elsewhere.
 
     python replay_controlled.py reviewer-trials.zip merchant-reviewer-trials.zip
 
